@@ -1,5 +1,7 @@
 package com.seungmoo.java8to11;
 
+import java.util.function.*;
+
 //@SpringBootApplication
 public class Java8to11Application {
 
@@ -57,6 +59,42 @@ public class Java8to11Application {
                 return number + baseNumber;
             }
         };
+
+        // class로 만들어진 Function
+        Plus10 plus10 = new Plus10();
+        System.out.println(plus10.apply(1));
+
+        // Function interface를 사용해서 함수를 곧바로 만들 수 있다.
+        Function<Integer, Integer> plus11 = i -> i + 11;
+        Function<Integer, Integer> multiply2 = i -> i * 2;
+        System.out.println(multiply2.apply(2));
+
+        // 고차 함수
+        // multiply2의 결과값을 plus11 함수의 입력 값으로 사용한다.
+        Function<Integer, Integer> multiply2AndPlus10 = plus11.compose(multiply2);
+        System.out.println(multiply2AndPlus10.apply(2)); // (2 * 2) + 11 = 15
+
+        // plus11 뒤에 multiply2 함수를 붙이는 것.
+        // plus11의 결과값을 multiply2의 입력값으로 넣어서 실행한다.
+        System.out.println(plus11.andThen(multiply2).apply(2)); // (2 + 11) * 2 = 26
+
+        // Comsumer는 void만 있기 때문에 return은 못한다.
+        Consumer<Integer> printT = i -> System.out.println(i);
+        printT.accept(10);
+
+        // T 타입의 값을 제공한다.
+        Supplier<Integer> get10 = () -> 10;
+        System.out.println(get10.get());
+
+        // 인자를 받아서 True, False를 return
+        Predicate<String> startsWith = s -> s.startsWith("seungmoo"); // 인자를 받아서 seungmoo로 시작하는 지 확인
+        startsWith.test("seungmoolee");
+        Predicate<Integer> isEven = i -> i % 2 == 0;
+
+        // 입력값과 리턴값의 Type이 같은경우 (쪼끔 더 깔끔)
+        UnaryOperator<Integer> plus10Unary = i -> i + 10;
+
+        // BinaryOperator<T> = BiFunction<T, T, T> ==> 3개 타입이 모두 같을 때 (앞에 두개는 파라미터, 뒤에 한 개는 리턴)
     }
 
 }
