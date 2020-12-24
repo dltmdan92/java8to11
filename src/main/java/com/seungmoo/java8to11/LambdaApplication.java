@@ -3,9 +3,9 @@ package com.seungmoo.java8to11;
 import java.util.function.*;
 
 //@SpringBootApplication
-public class Java8to11Application {
+public class LambdaApplication {
 
-    public static void main(String[] args) {
+    private static void lambda1() {
         //SpringApplication.run(Java8to11Application.class, args);
 
         // 이런 것을 익명 내부 클래스라고 한다. --> 함수형 인터페이스의 경우에는 람다형태를 적용할 수 있다.
@@ -95,6 +95,54 @@ public class Java8to11Application {
         UnaryOperator<Integer> plus10Unary = i -> i + 10;
 
         // BinaryOperator<T> = BiFunction<T, T, T> ==> 3개 타입이 모두 같을 때 (앞에 두개는 파라미터, 뒤에 한 개는 리턴)
+    }
+
+    private static void lambda2() {
+        // parameter 없으면 그냥 (), 10 리턴하는 바디가 한 줄 일때는 그냥 10 적어준다.
+        Supplier<Integer> get10 = () -> 10;
+
+        // 인자가 두개 인 경우, BiFunction
+        BiFunction<Integer, Integer, Integer> plus = (a, b) -> a + b;
+        // 인자 두 개와, 리턴 타입이 모두 같은 타입
+        BinaryOperator<Integer> plus2 = (a, b) -> a + b;
+
+        // java 8 부터 이 변수가 사실상 final 일 경우, final 생략이 가능하다. (람다)
+        int baseNumber = 10; // final 생략했음
+
+        // 로컬 클래스, 외부 변수와 내부 변수 name이 같을 경우 shadowing 된다. (스코프가 다름)
+        class LocalClass {
+            int baseNumber = 5;
+            void printBaseNumber() {
+                System.out.println(baseNumber);
+            }
+        }
+
+        // 익명 클래스, 외부 변수와 내부 변수 name이 같을 경우 shadowing 된다. (스코프가 다름)
+        Consumer<Integer> integerConsumer = new Consumer<Integer>() {
+            int baseNumber = 5;
+            @Override
+            public void accept(Integer baseNumber) {
+                System.out.println(baseNumber);
+            }
+        };
+
+        // 람다 외부 로컬 변수 참조할 때는, 로컬 클래스, 익명 클래스와는 다르다.
+        // 공통점은 외부 변수(baseNumber)를 참조할 수 있다.
+        // 차이점 : 람다에서는 변수 쉐도잉이 안된다. (외부 변수와 내부 변수의 name이 같은 경우 외부 변수는 쉐도잉 처리가 안된다.)
+        // "같은 스코프" 이기 때문이다.
+        IntConsumer printInt = i -> {
+            //int baseNumber = 5;
+            System.out.println(i + baseNumber);
+        };
+
+        // 이렇게 변수가 수정이 발생하는 경우에는 람다식 컴파일할 때 에러남.
+        //baseNumber++;
+
+        printInt.accept(10);
+    }
+
+    public static void main(String[] args) {
+        lambda2();
     }
 
 }
