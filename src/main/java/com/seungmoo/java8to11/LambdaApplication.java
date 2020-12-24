@@ -1,5 +1,7 @@
 package com.seungmoo.java8to11;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.function.*;
 
 //@SpringBootApplication
@@ -141,8 +143,70 @@ public class LambdaApplication {
         printInt.accept(10);
     }
 
+    private static void 메소드_레퍼런스() {
+        // :: 콜론 두개 --> 메서드 레퍼런스를 뜻한다.
+        UnaryOperator<String> hi = Greeting::hi; // staic 메소드라 바로 참조 가능
+
+        // 노멀 메소드라서 인스턴스 생성 후 참조
+        Greeting greeting = new Greeting();
+        UnaryOperator<String> hello = greeting::hello;
+        hello.apply("seungmoo");
+
+        // 생성자 new 메서드를 레퍼런스 통해서 Suppier를 만든다.
+        Supplier<Greeting> newGreeting = Greeting::new; // 이것은 Greeting 객체 만든 것이 아님.
+        newGreeting.get(); // get() 해야 객체를 리턴받는다.
+
+        // 이 두개는 서로 다른 생성자를 사용한다.
+        Function<String, Greeting> seungmooGreeting = Greeting::new;
+        Supplier<Greeting> supplierGreeting = Greeting::new;
+
+        System.out.println(seungmooGreeting.apply("seungmoo").getName()); // String
+        System.out.println(supplierGreeting.get().getName()); // null
+
+
+        String[] names = {"seungmoo", "whiteship", "toby"};
+        /**
+         * Comparator는 int compare(T o1, T o2); 하나만을 추상 메소드로 갖는 "Functional interface" 이다.
+         * 참고로 equals는 Object의 메소드를 overriding 한 것임.
+         * 나머지 것들은 default, static 메서드들 이다.
+         *
+         * Arrays.sort 메서드에 람다를 넣을 수 있으므로 메서드 레퍼런스도 넣을 수 있다.
+         */
+        Arrays.sort(names, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
+
+        // 메서드 레퍼런스를 사용할 수 있다.
+        // 임의의 객체의 인스턴스 메소드를 참조한 것이다. (절대로 static 메소드를 사용한 것이 아님!! 임의의 객체가 생성된 것임.)
+        // 아래 3 구문은 모두 동일한 것들임
+        Arrays.sort(names, String::compareToIgnoreCase); // 메서드 레퍼런스
+        Arrays.sort(names, (o1, o2) -> o1.compareToIgnoreCase(o2)); // 람다식
+        // 익명 클래스 생성
+        Arrays.sort(names, new Comparator<>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareToIgnoreCase(o2);
+            }
+        });
+
+        /**
+         * 메소드 참조하는 방법
+         * 스태틱 메소드 참조                   -->   타입::스태틱 메소드
+         * 특정 객체의 인스턴스 메소드 참조       -->	객체 레퍼런스::인스턴스 메소드
+         * 임의 객체의 인스턴스 메소드 참조       -->	타입::인스턴스 메소드
+         * 생성자 참조	                      -->   타입::new
+         */
+
+    }
+
+
     public static void main(String[] args) {
-        lambda2();
+        //lambda1();
+        //lambda2();
+        메소드_레퍼런스();
     }
 
 }
