@@ -1,4 +1,4 @@
-package com.seungmoo.java8to11;
+package com.seungmoo.java8to11.lambda;
 
 import java.util.function.Function;
 

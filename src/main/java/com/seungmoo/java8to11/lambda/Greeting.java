@@ -1,4 +1,4 @@
-package com.seungmoo.java8to11;
+package com.seungmoo.java8to11.lambda;
 
 public class Greeting {
     private String name;

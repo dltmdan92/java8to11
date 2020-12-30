@@ -1,4 +1,4 @@
-package com.seungmoo.java8to11;
+package com.seungmoo.java8to11.lambda;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -7,7 +7,7 @@ import java.util.function.*;
 //@SpringBootApplication
 public class LambdaApplication {
 
-    private static void lambda1() {
+    public static void lambda1() {
         //SpringApplication.run(Java8to11Application.class, args);
 
         // 이런 것을 익명 내부 클래스라고 한다. --> 함수형 인터페이스의 경우에는 람다형태를 적용할 수 있다.
@@ -99,7 +99,7 @@ public class LambdaApplication {
         // BinaryOperator<T> = BiFunction<T, T, T> ==> 3개 타입이 모두 같을 때 (앞에 두개는 파라미터, 뒤에 한 개는 리턴)
     }
 
-    private static void lambda2() {
+    public static void lambda2() {
         // parameter 없으면 그냥 (), 10 리턴하는 바디가 한 줄 일때는 그냥 10 적어준다.
         Supplier<Integer> get10 = () -> 10;
 
@@ -143,7 +143,7 @@ public class LambdaApplication {
         printInt.accept(10);
     }
 
-    private static void 메소드_레퍼런스() {
+    public static void 메소드_레퍼런스() {
         // :: 콜론 두개 --> 메서드 레퍼런스를 뜻한다.
         UnaryOperator<String> hi = Greeting::hi; // staic 메소드라 바로 참조 가능
 
@@ -200,13 +200,6 @@ public class LambdaApplication {
          * 생성자 참조	                      -->   타입::new
          */
 
-    }
-
-
-    public static void main(String[] args) {
-        //lambda1();
-        //lambda2();
-        메소드_레퍼런스();
     }
 
 }

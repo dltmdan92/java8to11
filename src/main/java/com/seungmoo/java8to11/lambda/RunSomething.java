@@ -1,4 +1,4 @@
-package com.seungmoo.java8to11;
+package com.seungmoo.java8to11.lambda;
 
 /**
  * 추상 메서드가 딱! 하나만 있으면 "함수형 인터페이스"이다.
