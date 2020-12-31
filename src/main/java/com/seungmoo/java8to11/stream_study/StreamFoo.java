@@ -123,7 +123,7 @@ public class StreamFoo {
                 .map(OnlineClass::getTitle)
                 .filter(title -> title.contains("spring"))
                 .collect(Collectors.toList());
-        
+
         spring.forEach(System.out::println);
     }
 

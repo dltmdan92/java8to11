@@ -3,6 +3,7 @@ package com.seungmoo.java8to11;
 import com.seungmoo.java8to11.interface_study.DefaultFoo;
 import com.seungmoo.java8to11.interface_study.Foo;
 import com.seungmoo.java8to11.lambda.LambdaApplication;
+import com.seungmoo.java8to11.optional_study.TestOptional;
 import com.seungmoo.java8to11.stream_study.StreamFoo;
 
 public class Main {
@@ -20,8 +21,13 @@ public class Main {
 
          */
 
+        /*
         StreamFoo foo = new StreamFoo();
         foo.runStream();
+        */
+
+        TestOptional testOptional = new TestOptional();
+        testOptional.runOptional();
     }
 }
 
