@@ -1,5 +1,6 @@
 package com.seungmoo.java8to11;
 
+import com.seungmoo.java8to11.date_study.DateApi;
 import com.seungmoo.java8to11.interface_study.DefaultFoo;
 import com.seungmoo.java8to11.interface_study.Foo;
 import com.seungmoo.java8to11.lambda.LambdaApplication;
@@ -26,8 +27,17 @@ public class Main {
         foo.runStream();
         */
 
+        /*
         TestOptional testOptional = new TestOptional();
         testOptional.runOptional();
+        */
+
+        DateApi dateApi = new DateApi();
+        try {
+            dateApi.runDate();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
 
