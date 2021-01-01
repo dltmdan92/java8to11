@@ -1,6 +1,7 @@
 package com.seungmoo.java8to11;
 
 import com.seungmoo.java8to11.date_study.DateApi;
+import com.seungmoo.java8to11.date_study.DateApi2;
 import com.seungmoo.java8to11.interface_study.DefaultFoo;
 import com.seungmoo.java8to11.interface_study.Foo;
 import com.seungmoo.java8to11.lambda.LambdaApplication;
@@ -32,12 +33,21 @@ public class Main {
         testOptional.runOptional();
         */
 
+        /*
         DateApi dateApi = new DateApi();
         try {
             dateApi.runDate();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        */
+
+        DateApi2 dateApi2 = new DateApi2();
+        dateApi2.runDateApi();
+        System.out.println("==========================");
+        dateApi2.runDuration();
+        System.out.println("==========================");
+        dateApi2.runLocalDateTime();
     }
 }
 
