@@ -1,5 +1,6 @@
 package com.seungmoo.java8to11;
 
+import com.seungmoo.java8to11.concurrent.ThreadStudy;
 import com.seungmoo.java8to11.date_study.DateApi;
 import com.seungmoo.java8to11.date_study.DateApi2;
 import com.seungmoo.java8to11.interface_study.DefaultFoo;
@@ -9,7 +10,7 @@ import com.seungmoo.java8to11.optional_study.TestOptional;
 import com.seungmoo.java8to11.stream_study.StreamFoo;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //LambdaApplication.lambda1();
         //LambdaApplication.lambda2();
         //LambdaApplication.메소드_레퍼런스();
@@ -42,12 +43,17 @@ public class Main {
         }
         */
 
+        /*
         DateApi2 dateApi2 = new DateApi2();
         dateApi2.runDateApi();
         System.out.println("==========================");
         dateApi2.runDuration();
         System.out.println("==========================");
         dateApi2.runLocalDateTime();
+        */
+
+        ThreadStudy threadStudy = new ThreadStudy();
+        threadStudy.joinThread();
     }
 }
 
