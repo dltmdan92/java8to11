@@ -61,7 +61,7 @@ public class Main {
         */
 
         CallableFuture callableFuture = new CallableFuture();
-        callableFuture.runCallable2();
+        callableFuture.runCompletableFutrure();
     }
 }
 
