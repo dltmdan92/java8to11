@@ -8,6 +8,7 @@ import com.seungmoo.java8to11.interface_study.DefaultFoo;
 import com.seungmoo.java8to11.interface_study.Foo;
 import com.seungmoo.java8to11.lambda.LambdaApplication;
 import com.seungmoo.java8to11.optional_study.TestOptional;
+import com.seungmoo.java8to11.parallel_sort.ParallelSort;
 import com.seungmoo.java8to11.stream_study.StreamFoo;
 
 import java.util.concurrent.ExecutionException;
@@ -60,8 +61,12 @@ public class Main {
         threadStudy.joinThread();
         */
 
+        /*
         CallableFuture callableFuture = new CallableFuture();
         callableFuture.runCompletableFutrure();
+        */
+
+        ParallelSort.run();
     }
 }
 
