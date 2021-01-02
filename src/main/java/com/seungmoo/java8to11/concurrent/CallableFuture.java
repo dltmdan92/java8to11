@@ -2,6 +2,7 @@ package com.seungmoo.java8to11.concurrent;
 
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * Callable
@@ -153,6 +154,104 @@ public class CallableFuture {
 
         System.out.println(futureSupplyAsync.get());
 
+    }
+
+    /**
+     * 18.	CompletableFuture 2
+     *
+     * 조합하기
+     * •	thenCompose(): 두 작업이 서로 이어서 실행하도록 조합
+     * •	thenCombine(): 두 작업을 독립적으로 실행하고 둘 다 종료 했을 때 콜백 실행 --> 콜백까지의 blocking이 존재
+     * •	allOf(): 여러 작업을 모두 실행하고 모든 작업 결과에 콜백 실행
+     * •	anyOf(): 여러 작업 중에 가장 빨리 끝난 하나의 결과에 콜백 실행
+     *
+     * 예외처리
+     * •	exeptionally(Function)
+     * •	handle(BiFunction):
+     *
+     * 참고
+     * •	https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
+     * •	https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public void runCompletableFutrure2() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+            System.out.println("Hello " + Thread.currentThread().getName());
+            return "Hello";
+        });
+
+        // thenCompose(): 두 작업이 서로 이어서 실행하도록 조합
+        CompletableFuture<String> future = hello.thenCompose(CallableFuture::getWorld);
+        System.out.println(future.get());
+
+        // thenCombine(): 두 작업을 독립적으로 실행하고 "둘 다 종료 했을 때" 콜백 실행 (BiFunction 사용)
+        CompletableFuture<String> futureCombine = hello.thenCombine(getWorld("Hello"), (helloReturn, worldReturn) -> helloReturn + " " + worldReturn);
+        System.out.println(futureCombine.get());
+
+        // allOf
+        // 이거 조금 위험할 수 있음. 모든 Task가 같은 타입 보장 X, 도중에 Exception 발생 가능성도 있음
+        CompletableFuture<Void> futureAllOf = CompletableFuture.allOf(hello, getWorld("Hello"))
+                .thenAccept(System.out::println); // parameter가 null로 들어 오게 된다.
+        System.out.println(futureAllOf.get());
+
+        // 위의 방식을 아래 방식으로 사용해보자.
+        // Type 명시 + unchecked exception으로 발생되게 처리 (join() 메서드,  (get()은 checked exception임.))
+        // 아래 방식을 하면 blocking이 되지 않는다.
+        List<CompletableFuture<String>> futures = List.of(hello, getWorld("Hello"));
+        CompletableFuture[] futuresArray = futures.toArray(new CompletableFuture[futures.size()]);
+
+        CompletableFuture<List<String>> listCompletableFuture = CompletableFuture.allOf(futuresArray)
+                .thenApply(v -> futures.stream()
+                        // get() 보다는 join()을 쓰면 unchecked exception이기 때문에 try catch 문을 생략할 수 있다.
+                        .map(CompletableFuture::join)
+                        .collect(Collectors.toList()));
+        listCompletableFuture.get().forEach(System.out::println);
+
+        // anyOf : 여러 작업 중에 가장 빨리 끝난 하나의 결과에 콜백 실행
+        CompletableFuture<Object> futureAnyOf = CompletableFuture.anyOf(hello, getWorld("world").thenAccept(System.out::println));
+        futureAnyOf.get();
+
+        // Error를 처리하는 법
+        boolean throwError = true;
+
+        CompletableFuture<String> exceptionally = CompletableFuture.supplyAsync(() -> {
+            if (throwError) {
+                throw new IllegalStateException();
+            }
+            System.out.println("Hello Error " + Thread.currentThread().getName());
+            return "Hello Error";
+        })
+                // Error가 발생했을 때 Error Type을 받아서 Function 실행 및 리턴
+                .exceptionally(exception -> {
+                    System.out.println(exception);
+                    return "Error!!!";
+                });
+        System.out.println(exceptionally.get());
+
+        // Result와 Error를 둘다 처리하는 법 (handle)
+        CompletableFuture<Object> handle = CompletableFuture.supplyAsync(() -> {
+            if (throwError) {
+                throw new IllegalStateException();
+            }
+            System.out.println("Hello Error " + Thread.currentThread().getName());
+            return "Hello Error";
+        })
+                .handle((result, exception) -> {
+                    if (exception != null) {
+                        System.out.println(exception);
+                        return "ERROR !!";
+                    }
+                    return result;
+                });
+        System.out.println(handle.get());
+    }
+
+    private static CompletableFuture<String> getWorld(String message) {
+        return CompletableFuture.supplyAsync(() -> {
+            System.out.println("World " + Thread.currentThread().getName());
+            return message + " World";
+        });
     }
 
 }
