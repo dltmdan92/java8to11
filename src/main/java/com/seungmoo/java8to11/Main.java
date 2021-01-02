@@ -1,5 +1,6 @@
 package com.seungmoo.java8to11;
 
+import com.seungmoo.java8to11.concurrent.CallableFuture;
 import com.seungmoo.java8to11.concurrent.ThreadStudy;
 import com.seungmoo.java8to11.date_study.DateApi;
 import com.seungmoo.java8to11.date_study.DateApi2;
@@ -9,8 +10,10 @@ import com.seungmoo.java8to11.lambda.LambdaApplication;
 import com.seungmoo.java8to11.optional_study.TestOptional;
 import com.seungmoo.java8to11.stream_study.StreamFoo;
 
+import java.util.concurrent.ExecutionException;
+
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         //LambdaApplication.lambda1();
         //LambdaApplication.lambda2();
         //LambdaApplication.메소드_레퍼런스();
@@ -52,8 +55,13 @@ public class Main {
         dateApi2.runLocalDateTime();
         */
 
+        /*
         ThreadStudy threadStudy = new ThreadStudy();
         threadStudy.joinThread();
+        */
+
+        CallableFuture callableFuture = new CallableFuture();
+        callableFuture.runCallable2();
     }
 }
 
